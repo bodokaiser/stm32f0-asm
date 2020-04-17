@@ -1,0 +1,6 @@
+*.elf
+*.o
+*.bin
+a.out
+
+.vscode/.cortex-*

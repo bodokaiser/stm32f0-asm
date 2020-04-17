@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "cortex-debug",
+            "cwd": "${workspaceRoot}",
+            "executable": "main.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "configFiles": [
+                "board/stm32f0discovery.cfg"
+            ],
+            "device": "STM32F072RB"
+        }
+    ]
+}
