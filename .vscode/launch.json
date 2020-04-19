@@ -4,14 +4,15 @@
         {
             "name": "cortex-debug",
             "cwd": "${workspaceRoot}",
-            "executable": "main.elf",
+            "executable": "${folder}/main.elf",
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "openocd",
             "configFiles": [
                 "board/stm32f0discovery.cfg"
             ],
-            "device": "STM32F072RB"
+            "device": "STM32F072RB",
+            "svdFile": "${workspaceRoot}/STM32F072x.svd"
         }
     ]
 }
