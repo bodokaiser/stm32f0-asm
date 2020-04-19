@@ -3,29 +3,41 @@
 .fpu softvfp
 .thumb
 
-RCC_GPIO   = 0x40021014
-GPIOC_MODE = 0x48000800
-GPIOC_BSSR = 0x48000818
+/*
+ * Register address constants that are replaced by the compiler.
+ */
+RCC_GPIO   = 0x40021014 @ Reset and clock control (RCC) register to enable GPIO.
+GPIOC_MODE = 0x48000800 @ GPIO mode register to configure the mode, i.e. input or output of GPIOC.
+GPIOC_BSRR = 0x48000818 @ GPIO bit set/reset register to set the GPIOC pins to high or low.
 
-@ vector table
-.word 0x28000000;
-.word 0x080000ed;
-.space 0xe4;
+/*
+ * Vector table.
+ */
+.word 0x28000000; @ End address of the memory, used as stack pointer.
+.word 0x080000ed; @ Start address of the reset handler instructions.
+.space 0xe4;      @ Empty space that can be used to define other (interrupt) handlers.
 
-@ enable clock for GPIOC peripherals via RCC registers
-LDR r0, =RCC_GPIO
-LDR r1, =(1 << 19)
-STR r1, [r0]
+/*
+ * Enable clock for GPIOC peripherals via RCC registers
+ */
+LDR r0, =RCC_GPIO  @ Load register address into r0.
+LDR r1, =(1 << 19) @ Load register value into r1.
+STR r1, [r0]       @ Set register value at register address.
 
-@ configure PC6 to general purpose output mode
-LDR r0, =GPIOC_MODE
-LDR r1, =(1 << (2*6))
-STR r1, [r0]
+/*
+ * Enable clock for GPIOC peripherals via RCC registers.
+ */
+LDR r0, =GPIOC_MODE      @ Load register address into r0.
+LDR r1, [r0]             @ Load value of register into r1.
+LDR r2, =(1 << (2*6))    @ Enable bit 12 in r2.
+ORRS r1, r2              @ r1 = r1 | r2. We need to use ORRS because ORR is not available for M0.
+STR r1, [r0]             @ Set register to value of r1.
 
-@ configure PC6 to high
-LDR r0, =GPIOC_BSSR
-LDR r1, =(1 << 6)
-STR r1, [r0]
+/*
+ * Configure PC6 to high.
+ */
+LDR r0, =GPIOC_BSRR @ Load register address into r0.
+LDR r1, =(1 << 6)   @ Enable bit 6 in r1.
+STR r1, [r0]        @ Set register to value of r1.
 
-NOP
-B .
+B . @ Infinite loop.
