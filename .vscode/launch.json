@@ -4,7 +4,7 @@
         {
             "name": "cortex-debug",
             "cwd": "${workspaceRoot}",
-            "executable": "${folder}/main.elf",
+            "executable": "${relativeFileDirname}/main.elf",
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "openocd",
